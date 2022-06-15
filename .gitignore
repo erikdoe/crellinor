@@ -1,0 +1,10 @@
+target
+results
+*.csv
+run*.json
+.idea/workspace.xml
+.idea/dictionaries/
+.idea/libraries/
+.nrepl-port
+.lein-failures
+.DS_Store

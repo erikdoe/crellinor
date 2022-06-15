@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+  <title>Crellinor - Worldmap</title>
+  <link rel="stylesheet" type="text/css" href="/ui/stylesheets/worldmap.css">
+  <script src="/ui/lib/jquery-3.3.1.min.js"></script>
+  <script src="/ui/lib/d3.v3.min.js"></script>
+  <script src="/ui/helper.js"></script>
+</head>
+<body>
+
+<h1>The Digital Lands of Crellinor</h1>
+
+<form method="get" action="#">
+  <button type="button" onclick="simPlay()">Play</button>
+  <button type="button" onclick="simPause()">Pause</button>
+  <button type="button" onclick="reload()">Step</button>
+  <span class="formlabel">size: </span>
+  <select id="sel-size" onclick="redraw()">
+    <option value="4">4 px</option>
+    <option value="6" selected>6 px</option>
+    <option value="8">8 px</option>
+  </select>
+</form>
+
+<hr>
+
+<script src="/ui/worldmap.js"></script>
+
+<script>
+  var isBusy;
+
+  reload = function () {
+    if (!isBusy) {
+      isBusy = true;
+      d3.json("/data/worldmap", redraw)
+    }
+  };
+
+  var data;
+  redraw = function (error, newData) {
+    data = newData || data;
+    var size = parseInt($('#sel-size').find(":selected").text());
+    Crellinor.worldmap(data, size)
+    isBusy = false;
+  };
+
+  var intervalID;
+  simPlay = function() {
+    if (!intervalID) {
+      intervalID = setInterval(reload, 200);
+    }
+  };
+
+  simPause = function () {
+    clearInterval(intervalID);
+    intervalID = undefined;
+  };
+
+  $(document).ready(reload());
+</script>
+
+
+<div id="chart-wrapper"></div>
+
+</body>
+</html>

@@ -1,0 +1,193 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crellinor - Instructions chart</title>
+  <link rel="stylesheet" type="text/css" href="/ui/stylesheets/popchart.css">
+  <script src="/ui/lib/jquery-3.3.1.min.js"></script>
+  <script src="/ui/lib/highcharts-6.0.7.min.js"></script>
+</head>
+<body>
+
+<h1>The Digital Lands of Crellinor</h1>
+
+<hr>
+
+<div id="popchart-container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+<script type="text/javascript">
+
+  $.getJSON(
+      '/stats/population',
+      function (data) {
+
+        Highcharts.chart('popchart-container', {
+          chart: {
+            zoomType: 'x'
+          },
+          title: {
+            text: 'Population over time'
+          },
+          subtitle: {
+            text: document.ontouchstart === undefined ?
+                'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+          },
+          xAxis: {},
+          yAxis: {
+            min: 0,
+            max_: 500,
+            title: {
+              text: 'population'
+            }
+          },
+          legend: {
+            enabled: true
+          },
+          plotOptions: {
+            area: {
+              fillColor: {
+                linearGradient: {
+                  x1: 0,
+                  y1: 0,
+                  x2: 0,
+                  y2: 1
+                },
+                stops: [
+                  [0, Highcharts.getOptions().colors[0]],
+                  [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                ]
+              },
+              marker: {
+                radius: 1
+              },
+              threshold: null
+            }
+          },
+
+          series: [{
+            type: 'area',
+            name: 'population',
+            data: data
+          }]
+        });
+      }
+  );
+</script>
+
+<hr>
+
+<div id="instrchart-container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+<script type="text/javascript">
+
+  $.getJSON(
+      '/stats/instr-counts',
+      function (data) {
+
+        Highcharts.chart('instrchart-container', {
+          chart: {
+            zoomType: 'x'
+          },
+          title: {
+            text: 'Instructions use over time'
+          },
+          subtitle: {
+            text: document.ontouchstart === undefined ?
+                'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+          },
+          xAxis: {},
+          yAxis: {
+            min: 0,
+            max: 100,
+            title: {
+              text: 'relative use of instructuion (percent)'
+            }
+          },
+          legend: {
+            enabled: true
+          },
+          colors: ['#e6194b', '#3cb44b', '#ffe119', '#0082c8', '#f58231',
+            '#911eb4', '#46f0f0', '#f032e6', '#d2f53c', '#008080', '#808080'],
+          plotOptions: {
+            area: {
+              stacking: 'normal'
+            },
+            marker: {
+              radius: 1
+            }
+          },
+
+          series: [
+            {
+              type: 'area',
+              name: 'EAT',
+              data: data.map(function ([t, f]) {
+                return [t, f["EAT"] * 100];
+              })
+            },
+            {
+              type: 'area',
+              name: 'MOV',
+              data: data.map(function ([t, f]) {
+                return [t, f["MOV"] * 100];
+              })
+            },
+            {
+              type: 'area',
+              name: 'TUL',
+              data: data.map(function ([t, f]) {
+                return [t, f["TUL"] * 100];
+              })
+            },
+            {
+              type: 'area',
+              name: 'TUR',
+              data: data.map(function ([t, f]) {
+                return [t, f["TUR"] * 100];
+              })
+            },
+            {
+              type: 'area',
+              name: 'NOP',
+              data: data.map(function ([t, f]) {
+                return [t, f["NOP"] * 100];
+              })
+            },
+            {
+              type: 'area',
+              name: 'JMS',
+              data: data.map(function ([t, f]) {
+                return [t, f["JMS"] * 100];
+              })
+            },
+            {
+              type: 'area',
+              name: 'JR4',
+              data: data.map(function ([t, f]) {
+                return [t, f["JR4"] * 100];
+              })
+            },
+            {
+              type: 'area',
+              name: 'BFH',
+              data: data.map(function ([t, f]) {
+                return [t, f["BFH"] * 100];
+              })
+            },
+            {
+              type: 'area',
+              name: 'BFA',
+              data: data.map(function ([t, f]) {
+                return [t, f["BFA"] * 100];
+              })
+            }
+          ]
+        });
+      }
+  );
+</script>
+
+</body>
+</html>

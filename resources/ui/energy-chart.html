@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crellinor - Energy chart</title>
+  <link rel="stylesheet" type="text/css" href="/ui/stylesheets/popchart.css">
+  <script src="/ui/lib/jquery-3.3.1.min.js"></script>
+  <script src="/ui/lib/highcharts-6.0.7.min.js"></script>
+</head>
+<body>
+
+<h1>The Digital Lands of Crellinor</h1>
+
+<hr>
+
+<div id="popchart-container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+<script type="text/javascript">
+
+  $.getJSON(
+      '/stats/population',
+      function (data) {
+
+        Highcharts.chart('popchart-container', {
+          chart: {
+            zoomType: 'x'
+          },
+          title: {
+            text: 'Population over time'
+          },
+          subtitle: {
+            text: document.ontouchstart === undefined ?
+                'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+          },
+          xAxis: {
+          },
+          yAxis: {
+            min: 0,
+            max_: 500,
+            title: {
+              text: 'population'
+            }
+          },
+          legend: {
+            enabled: true
+          },
+          plotOptions: {
+            area: {
+              fillColor: {
+                linearGradient: {
+                  x1: 0,
+                  y1: 0,
+                  x2: 0,
+                  y2: 1
+                },
+                stops: [
+                  [0, Highcharts.getOptions().colors[0]],
+                  [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                ]
+              },
+              marker: {
+                radius: 1
+              },
+              threshold: null
+            }
+          },
+
+          series: [{
+            type: 'area',
+            name: 'population',
+            data: data
+          }]
+        });
+      }
+  );
+</script>
+
+<hr>
+
+<div id="ernergychart-container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+<script type="text/javascript">
+
+  $.getJSON(
+      '/stats/energy-level',
+      function (data) {
+
+        Highcharts.chart('ernergychart-container', {
+          chart: {
+            zoomType: 'x'
+          },
+          title: {
+            text: 'Energy levels over time'
+          },
+          subtitle: {
+            text: document.ontouchstart === undefined ?
+                'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+          },
+          xAxis: {
+          },
+          yAxis: {
+            min: 0,
+            title: {
+              text: 'energy levels'
+            }
+          },
+          legend: {
+            enabled: true
+          },
+          colors: ['#4BC', '#CB4', '#284'],
+          plotOptions: {
+            area: {
+              stacking: 'normal'
+            },
+            marker: {
+              radius: 1
+            }
+          },
+
+          series: [{
+            type: 'area',
+            name: 'creatures (children)',
+            data: data.map(function ([t, p, a, c]) {
+              return [t, c];
+            })
+          }, {
+            type: 'area',
+            name: 'creatures (adults)',
+            data: data.map(function ([t, p, a, c]) {
+              return [t, a];
+            })
+          }, {
+            type: 'area',
+            name: 'plants',
+            data: data.map(function ([t, p, a, c]) {
+              return [t, p];
+            })
+          }]
+        });
+      }
+  );
+</script>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+{
+  "seed":              12345,
+
+  "world-end":       1000000,
+
+  "world-size":          150,
+  "start-pop-size":     1000,
+  "start-plant-count":  6000,
+
+  "plant-start-ep":      800,
+  "plant-prob":        0.225,
+
+  "max-age":          100000,
+  "creature-start-ep":   500,
+  "creature-max-ep":    5000,
+
+  "eat-ep":              500,
+  "min-mating-ep":      1500,
+  "view-distance":         5,
+
+  "program-length":       16,
+  "psection-length":       4,
+
+  "instructions": {
+    "EAT": 15,
+    "MOV": 10,
+    "TUR": 5,
+    "TUL": 5,
+    "NOP": 1,
+    "JMS": 2,
+    "JR4": 2,
+    "BFH": 2,
+    "BFA": 2
+  }
+
+}
